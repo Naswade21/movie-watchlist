@@ -8,17 +8,27 @@
 </head>
 <body>
     <main>
-        <div class="film-nav">
+        <section>
+            <div class="film-nav">
              <div class="head-wrap">
                 <h1>Find your Film</h1>
                 <a href="watchlist.html">My Watchlist</a>
             </div>
+        </div>
+        <div class="search-wrap">
             <form id="search-form">
-                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <div class="icon-container"><i class="fa-solid fa-magnifying-glass"></i></div>
                     <input type="search" name="search" id="search" placeholder="Search">
                     <button id="search-btn">Search</button>
             </form>
         </div>
+        </section>
+        <section>
+            <div id="movie-content">
+            <!-- Render the content here(including the image and start exploration)-->
+        </div>
+        </section>
     </main>
+    <script src="main.js" type="module"></script>
 </body>
 </html>

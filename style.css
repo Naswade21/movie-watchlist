@@ -37,3 +37,56 @@ a{
     font-size: 1rem;
     text-decoration: none;
 }
+
+.search-wrap{
+    display: flex;
+    justify-content: center;
+    margin-top: -1rem;
+}
+
+.icon-container{
+    color: #9CA3AF;
+    font-size: .8rem;
+}
+
+#search-form{
+    display: flex;
+    align-items: center;
+    background-color: #2E2E2F;
+    color: #A5A5A5;
+    width: calc(462 / 16 * 1rem);
+    padding-left: 1rem;
+    border-radius: 0.5rem .5rem .5rem 0.5rem;
+    height: 100%;
+    cursor: pointer;
+}
+
+#search{
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+    border: none;
+    margin-left: 1rem;
+    padding: .5rem;
+    font-size: 1rem;
+    color: #A5A5A5;
+}
+
+#search::-webkit-search-cancel-button{
+     color: #ffffff;
+     cursor: pointer;
+}
+
+#search:focus{
+    outline: none;
+}
+
+#search-form button{
+    background-color: #4B4B4B;
+    color: white;
+    font-size: 1rem;
+    padding: .5rem 1rem;
+    border: none;
+    border-radius: 0rem .5rem .5rem 0rem;
+    cursor: pointer;
+}
