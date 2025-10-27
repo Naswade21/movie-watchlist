@@ -21,33 +21,46 @@ searchForm.addEventListener('submit', async (e) => {
         return movie.Title
    })
 
-   renderMovies(newArr)
+   console.log(getMovieArr(newArr))
+
 })
 
-const getMovieInfo = async (arr) => {
-    let html = ``
-    for(let movies of arr){
-        const res = await fetch(`http://www.omdbapi.com/?apikey=440110a8&t=${movies}`)
-        const data = await res.json()
-
-        for(let theatre of data){
-            html += `
-        <div class="movie-item">
-            <img src="${theatre.Poster}">
-            <div class="movie-content"
-                <div class="movie-title">${theatre.Title} <i class="fa-solid fa-star"></i> <p id="rating">${theatre.imdbRating}</p></div>
-                <div><div>${theatre.Runtime}</div><div>${theatre.Genre}</div><button data-movie="${theatre.imdbID}">Watchlist</button></div>
-                <p>${theatre.Plot}</p>
-            </div>
-        </div>`
+const getMovieArr = (arr) => {
+    let movArr = []
+    for(let movie of arr){
+        async () => {
+            const res = await fetch(`http://www.omdbapi.com/?apikey=440110a8&t=${movie}`)
+            const data = await res.json()
+            return movArr.push(data)
         }
-    }
+       }
 
-    return html
+       return movArr
+}
+
+const getMovieHtml = (arr) => {
+    return arr.map((movie) => {
+        return `
+        <div class="movie-image">${movie.Poster}</div>
+        <div class="movie-content">
+            <div class="movie-title-wrap">
+                <div>${movie.Title}</div>
+                <i class="fa-solid fa-star"></i>
+                <div>${movie.imdbRating}</div>
+            </div>
+            <div class="movie-detail-wrap">
+                <div>${movie.Runtime}</div>
+                <div>${movie.Genre}</div>
+                <a data-movie="${movie.imdbID}"><i class="fa-solid fa-circle-plus"> Watchlist</a>
+            </div>
+            <p>${movie.Plot}</p>
+        </div>
+        `
+    })
 }
 
 const renderMovies = (arr) => {
-    return movieContent.innerHTML = getMovieInfo(arr)
+    return movieContent.innerHTML = getMovieHtml(arr)
 }
 
 /*
