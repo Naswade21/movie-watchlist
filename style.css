@@ -115,3 +115,11 @@ a{
 .add-movie a{
     font-size: 1.5rem;
 }
+
+.movie-item-wrap, .movie-title-wrap, .movie-detail-wrap{
+    display: flex;
+}
+
+.movie-title-wrap{
+
+}
