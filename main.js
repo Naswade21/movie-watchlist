@@ -40,6 +40,10 @@ const getMovieArr = async (arr) => {
     return await Promise.all(movArr) 
 }
 
+const addMovieToList = async (movieId) => {
+    //Add the movie that was selected to the watchlist and use the i parameter to add the movie using the id to the watchlist array
+}
+
 
 const getMovieHtml = (arr) => {
     return arr.map((movie) => {

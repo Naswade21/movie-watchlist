@@ -118,8 +118,8 @@ a{
 }
 
 #movie-content{
-    padding-right: calc(44 / 16 * 1rem);;
-    padding-left: calc(44 / 16 * 1rem);;
+    padding-right: calc(44 / 16 * 1rem);
+    padding-left: calc(44 / 16 * 1rem);
 }
 
 .movie-item-wrap, .movie-title-wrap, .movie-detail-wrap{
