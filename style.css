@@ -117,13 +117,17 @@ a{
     font-size: 1.5rem;
 }
 
+.extra-padding{
+    padding-right: calc(44 / 16 * 1rem);
+    padding-left: calc(44 / 16 * 1rem);
+}
+
 .movie-item-wrap, .movie-title-wrap, .movie-detail-wrap{
     display: flex;
 }
 
 .movie-item-wrap{
     padding: calc(44 / 16 * 1rem);
-    border-bottom: 1.5px solid #2C2C2C;
 }
 
 .movie-image{
@@ -158,7 +162,35 @@ a{
 }
 
 .movie-content p{
+    --max-lines: 3;
+    --line-height: 1.5;
+    max-height: calc(var(--max-lines) * 1.1rem * var(--line-height)); /* rem takes root html size and em takes parent size!!! */
+    line-height: var(--line-height);
     font-size: 1.1rem;
-    line-height: 1.2;
+    overflow: hidden;
     color: #A5A5A5;
+}
+
+.expand-btn{
+    appearance: none;
+    cursor: pointer;
+    margin-top: .25rem;
+}
+
+.expand-btn::before{
+    content: "...Read More";
+    font-size: 1.1rem;
+}
+
+.expand-btn:checked::before{
+    content: "...Read Less";
+}
+
+.movie-content p:has(+ .expand-btn:checked){
+    max-height: none;
+}
+
+.movie-border{
+    width: 100%;
+    border-bottom: 1.5px solid #2C2C2C;
 }

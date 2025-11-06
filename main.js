@@ -44,6 +44,7 @@ const getMovieArr = async (arr) => {
 const getMovieHtml = (arr) => {
     return arr.map((movie) => {
         return `
+    <div class="extra-padding">
         <div class="movie-item-wrap">
             <div class="movie-image"><img src="${movie.Poster}"></div>
             <div class="movie-content">
@@ -59,9 +60,14 @@ const getMovieHtml = (arr) => {
                     <a data-movie="${movie.imdbID}"><i class="fa-solid fa-circle-plus"></i> Watchlist</a>
                     </div>
                 </div>
-                <p data-text="${movie.imdbID}">${movie.Plot}</p>
+                <div class="movie-desc">
+                    <p data-text="${movie.imdbID}">${movie.Plot}</p>
+                    <input class="expand-btn" type="checkbox">
+                </div>
             </div>
         </div>
+        <div class="movie-border"></div>
+    </div>
         `
     }).join('')
 }
