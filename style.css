@@ -117,9 +117,9 @@ a{
     font-size: 1.5rem;
 }
 
-.extra-padding{
-    padding-right: calc(44 / 16 * 1rem);
-    padding-left: calc(44 / 16 * 1rem);
+#movie-content{
+    padding-right: calc(44 / 16 * 1rem);;
+    padding-left: calc(44 / 16 * 1rem);;
 }
 
 .movie-item-wrap, .movie-title-wrap, .movie-detail-wrap{
@@ -127,7 +127,9 @@ a{
 }
 
 .movie-item-wrap{
-    padding: calc(44 / 16 * 1rem);
+    padding-bottom: calc(44 / 16 * 1rem);
+    padding-top: calc(44 / 16 * 1rem);;
+    border-bottom: 1.5px solid #2C2C2C;
 }
 
 .movie-image{
@@ -188,9 +190,4 @@ a{
 
 .movie-content p:has(+ .expand-btn:checked){
     max-height: none;
-}
-
-.movie-border{
-    width: 100%;
-    border-bottom: 1.5px solid #2C2C2C;
 }

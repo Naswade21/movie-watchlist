@@ -44,7 +44,6 @@ const getMovieArr = async (arr) => {
 const getMovieHtml = (arr) => {
     return arr.map((movie) => {
         return `
-    <div class="extra-padding">
         <div class="movie-item-wrap">
             <div class="movie-image"><img src="${movie.Poster}"></div>
             <div class="movie-content">
@@ -66,8 +65,6 @@ const getMovieHtml = (arr) => {
                 </div>
             </div>
         </div>
-        <div class="movie-border"></div>
-    </div>
         `
     }).join('')
 }
