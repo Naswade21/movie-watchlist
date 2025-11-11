@@ -4,7 +4,13 @@ const searchForm = document.getElementById('search-form')
 const searchInput = document.getElementById('search')
 const watchContent = document.getElementById('watch-content')
 const movieContent = document.getElementById('movie-content')
-export let watchArr = []
+let moviesFromLocalStorage = JSON.parse(localStorage.getItem("movieWatchList"))
+let watchArr = []
+
+if(!moviesFromLocalStorage){
+    moviesFromLocalStorage = watchArr
+    localStorage.setItem("movieWatchList", JSON.stringify(watchArr))
+}
 
 
 document.addEventListener('click', (e) => {
@@ -45,9 +51,11 @@ const addMovieToList = async (movieId) => {
     const res = await fetch(`http://www.omdbapi.com/?apikey=440110a8&i=${movieId}`)
     const data = await res.json()
 
-    watchArr.push(data)
+    moviesFromLocalStorage.push(data)
 
-    return console.log(watchArr)
+    localStorage.setItem("movieWatchList", JSON.stringify(moviesFromLocalStorage))
+
+    return console.log(moviesFromLocalStorage)
 }
 
 
