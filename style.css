@@ -33,11 +33,17 @@ h1{
     font-size: calc(42.79 / 16 * 1rem);
 }
 
-a{
+a, .watch-button{
     font-size: 1rem;
     font-weight: bold;
     text-decoration: none;
     cursor: pointer;
+    background-color: transparent;
+    border: none;
+}
+
+.watch-button:hover, .watch-button i:hover{
+    color: gold;
 }
 
 .search-wrap{

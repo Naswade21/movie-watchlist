@@ -9,7 +9,7 @@ export let watchArr = []
 
 document.addEventListener('click', (e) => {
     if(e.target.dataset.movie){
-        //Some function
+        addMovieToList(e.target.dataset.movie)
     }
 })
 
@@ -42,6 +42,12 @@ const getMovieArr = async (arr) => {
 
 const addMovieToList = async (movieId) => {
     //Add the movie that was selected to the watchlist and use the i parameter to add the movie using the id to the watchlist array
+    const res = await fetch(`http://www.omdbapi.com/?apikey=440110a8&i=${movieId}`)
+    const data = await res.json()
+
+    watchArr.push(data)
+
+    return console.log(watchArr)
 }
 
 
@@ -60,7 +66,7 @@ const getMovieHtml = (arr) => {
                     <div>${movie.Runtime}</div>
                     <div>${movie.Genre}</div>
                     <div>
-                    <a data-movie="${movie.imdbID}"><i class="fa-solid fa-circle-plus"></i> Watchlist</a>
+                    <button class="watch-button" data-movie="${movie.imdbID}"><i class="fa-solid fa-circle-plus"></i> Watchlist</button>
                     </div>
                 </div>
                 <div class="movie-desc">
