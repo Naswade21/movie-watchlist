@@ -1,4 +1,4 @@
-
+//Handle when there is no data present
 const searchForm = document.getElementById('search-form')
 const searchInput = document.getElementById('search')
 const watchContent = document.getElementById('watch-content')
