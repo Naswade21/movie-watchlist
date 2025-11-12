@@ -1,4 +1,3 @@
-//work on limiting lines in para and work on css
 
 const searchForm = document.getElementById('search-form')
 const searchInput = document.getElementById('search')
@@ -17,9 +16,13 @@ document.addEventListener('click', (e) => {
     if(e.target.dataset.movie){
         addMovieToList(e.target.dataset.movie)
     }
+    else if(e.target.dataset.remove){
+        removeMovieFromList(e.target.dataset.remove)
+    }
 })
 
-searchForm.addEventListener('submit', async (e) => {
+if(searchForm){
+    searchForm.addEventListener('submit', async (e) => {
     e.preventDefault()
 
     const res = await fetch(`http://www.omdbapi.com/?apikey=440110a8&s=${searchInput.value}`)
@@ -34,6 +37,7 @@ searchForm.addEventListener('submit', async (e) => {
 
    renderMovies(movieData)
 })
+}
 
 const getMovieArr = async (arr) => {
     let movArr = arr.map(async (movie) => {
@@ -47,15 +51,45 @@ const getMovieArr = async (arr) => {
 }
 
 const addMovieToList = async (movieId) => {
-    //Add the movie that was selected to the watchlist and use the i parameter to add the movie using the id to the watchlist array
+
     const res = await fetch(`http://www.omdbapi.com/?apikey=440110a8&i=${movieId}`)
     const data = await res.json()
 
-    moviesFromLocalStorage.push(data)
+    //Ensure only unique id's are present in the watchlist
+
+    let uniqueArr = []
+
+    const movieIdAlreadyListed = {}
+
+   for(let movie of moviesFromLocalStorage){
+    const id = movie.imdbID
+
+    if(!movieIdAlreadyListed[id]){
+        uniqueArr.push(movie)
+
+        movieIdAlreadyListed[id] = true
+    }
+   }
+
+   moviesFromLocalStorage = uniqueArr
+
+   moviesFromLocalStorage.push(data)
+
+   localStorage.setItem("movieWatchList", JSON.stringify(moviesFromLocalStorage))
+}
+
+const removeMovieFromList = (movieId) => {
+    moviesFromLocalStorage = moviesFromLocalStorage.filter((movie) => {
+        if(movie.imdbID === movieId){
+            return false
+        }
+
+        return true
+    })
 
     localStorage.setItem("movieWatchList", JSON.stringify(moviesFromLocalStorage))
 
-    return console.log(moviesFromLocalStorage)
+    renderWatchlist(moviesFromLocalStorage)
 }
 
 
@@ -73,7 +107,7 @@ const getMovieHtml = (arr) => {
                 <div class="movie-detail-wrap">
                     <div>${movie.Runtime}</div>
                     <div>${movie.Genre}</div>
-                    <div>
+                    <div class="add">
                     <button class="watch-button" data-movie="${movie.imdbID}"><i class="fa-solid fa-circle-plus"></i> Watchlist</button>
                     </div>
                 </div>
@@ -87,8 +121,52 @@ const getMovieHtml = (arr) => {
     }).join('')
 }
 
+const getWatchlistHtml = (arr) => {
+    return arr.map((movie) => {
+        return `<div class="movie-item-wrap">
+            <div class="movie-image"><img src="${movie.Poster}"></div>
+            <div class="movie-content">
+                <div class="movie-title-wrap">
+                    <div>${movie.Title}</div>
+                    <div><i class="fa-solid fa-star"></i></div>
+                    <div>${movie.imdbRating}</div>
+                </div>
+                <div class="movie-detail-wrap">
+                    <div>${movie.Runtime}</div>
+                    <div>${movie.Genre}</div>
+                    <div class="remove">
+                    <button class="watch-button" data-remove="${movie.imdbID}"><i class="fa-solid fa-xmark"></i> Remove</button>
+                    </div>
+                </div>
+                <div class="movie-desc">
+                    <p data-text="${movie.imdbID}">${movie.Plot}</p>
+                    <input class="expand-btn" type="checkbox">
+                </div>
+            </div>
+        </div>`
+    }).join('')
+}
+
 const renderMovies = (arr) => {
     return movieContent.innerHTML = getMovieHtml(arr)
 }
 
+const renderWatchlist = (arr) => {
+    if(watchContent){
+        return watchContent.innerHTML = getWatchlistHtml(arr)
+    }
+}
 
+if(moviesFromLocalStorage.length > 0){
+    renderWatchlist(moviesFromLocalStorage)
+} else if(moviesFromLocalStorage.length === 0){
+    if(watchContent){
+
+        watchContent.innerHTML = `
+    <div class="start-movie-wrap">
+                    <div class="start-text">Your watchlist is looking a little empty...</div>
+                    <div class="add-movie"><a href="index.html"><i class="fa-solid fa-circle-plus"></i> Let’s add some movies!</a></div>
+                </div>
+    `
+    }
+}

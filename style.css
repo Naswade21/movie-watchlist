@@ -42,10 +42,6 @@ a, .watch-button{
     border: none;
 }
 
-.watch-button:hover, .watch-button i:hover{
-    color: gold;
-}
-
 .search-wrap{
     display: flex;
     justify-content: center;
@@ -123,13 +119,29 @@ a, .watch-button{
     font-size: 1.5rem;
 }
 
-#movie-content{
+#movie-content, #watch-content{
     padding-right: calc(44 / 16 * 1rem);
     padding-left: calc(44 / 16 * 1rem);
 }
 
 .movie-item-wrap, .movie-title-wrap, .movie-detail-wrap{
     display: flex;
+}
+
+.movie-detail-wrap .add:hover button{
+    color: gold;
+}
+
+.movie-detail-wrap .add:hover button i{
+    color: gold;
+}
+
+.movie-detail-wrap .remove:hover button{
+    color: red;
+}
+
+.movie-detail-wrap .remove:hover button i{
+    color: red;
 }
 
 .movie-item-wrap{
