@@ -1,4 +1,4 @@
-//Handle when there is no data present
+
 const searchForm = document.getElementById('search-form')
 const searchInput = document.getElementById('search')
 const watchContent = document.getElementById('watch-content')
@@ -10,7 +10,6 @@ if(!moviesFromLocalStorage){
     moviesFromLocalStorage = watchArr
     localStorage.setItem("movieWatchList", JSON.stringify(watchArr))
 }
-
 
 document.addEventListener('click', (e) => {
     if(e.target.dataset.movie){
@@ -28,14 +27,22 @@ if(searchForm){
     const res = await fetch(`http://www.omdbapi.com/?apikey=440110a8&s=${searchInput.value}`)
     const data = await res.json()
 
-  
-   let newArr = data.Search.map((movie) => {
+    if(data.totalResults === '0' || data.Response !== 'True'){
+        return movieContent.innerHTML = `
+        <div class="start-movie-wrap">
+                    <div class="start-text">Unable to find what you’re looking for.<br>
+                    Please try another search.</div>
+                </div>
+        `
+    } else{
+        let newArr = data.Search.map((movie) => {
         return movie.Title
    })
 
    const movieData = await getMovieArr(newArr)
 
    renderMovies(movieData)
+    }
 })
 }
 
@@ -153,20 +160,19 @@ const renderMovies = (arr) => {
 
 const renderWatchlist = (arr) => {
     if(watchContent){
-        return watchContent.innerHTML = getWatchlistHtml(arr)
+        if(arr.length === 0){
+            watchContent.innerHTML = `
+            <div class="start-movie-wrap">
+                    <div class="start-text">Your watchlist is looking a little empty...</div>
+                    <div class="add-movie"><a href="index.html"><i class="fa-solid fa-circle-plus"></i> Let’s add some movies!</a></div>
+                </div>
+            `
+        } else{
+            watchContent.innerHTML = getWatchlistHtml(arr)
+        }
     }
 }
 
 if(moviesFromLocalStorage.length > 0){
     renderWatchlist(moviesFromLocalStorage)
-} else if(moviesFromLocalStorage.length === 0){
-    if(watchContent){
-
-        watchContent.innerHTML = `
-    <div class="start-movie-wrap">
-                    <div class="start-text">Your watchlist is looking a little empty...</div>
-                    <div class="add-movie"><a href="index.html"><i class="fa-solid fa-circle-plus"></i> Let’s add some movies!</a></div>
-                </div>
-    `
-    }
 }
