@@ -23,9 +23,10 @@ document.addEventListener('click', (e) => {
 if(searchForm){
     searchForm.addEventListener('submit', async (e) => {
     e.preventDefault()
-
+    
     const res = await fetch(`http://www.omdbapi.com/?apikey=440110a8&s=${searchInput.value}`)
     const data = await res.json()
+    
 
     if(data.totalResults === '0' || data.Response !== 'True'){
         return movieContent.innerHTML = `
