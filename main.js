@@ -3,6 +3,7 @@ const searchForm = document.getElementById('search-form')
 const searchInput = document.getElementById('search')
 const watchContent = document.getElementById('watch-content')
 const movieContent = document.getElementById('movie-content')
+const imageSelect = document.getElementsByClassName('movie-image')
 let moviesFromLocalStorage = JSON.parse(localStorage.getItem("movieWatchList"))
 let watchArr = []
 
@@ -49,6 +50,7 @@ if(searchForm){
 
 const getMovieArr = async (arr) => {
     let movArr = arr.map(async (movie) => {
+        
         const res = await fetch(`http://www.omdbapi.com/?apikey=440110a8&t=${movie}`)
         const data = await res.json()
 
