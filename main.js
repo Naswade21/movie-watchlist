@@ -3,7 +3,6 @@ const searchForm = document.getElementById('search-form')
 const searchInput = document.getElementById('search')
 const watchContent = document.getElementById('watch-content')
 const movieContent = document.getElementById('movie-content')
-const imageSelect = document.getElementsByClassName('movie-image')
 let moviesFromLocalStorage = JSON.parse(localStorage.getItem("movieWatchList"))
 let watchArr = []
 
@@ -24,12 +23,15 @@ document.addEventListener('click', (e) => {
 if(searchForm){
     searchForm.addEventListener('submit', async (e) => {
     e.preventDefault()
-    
-    const res = await fetch(`http://www.omdbapi.com/?apikey=440110a8&s=${searchInput.value}`)
-    const data = await res.json()
-    
 
-    if(data.totalResults === '0' || data.Response !== 'True'){
+    try{
+         const res = await fetch(`http://www.omdbapi.com/?apikey=440110a8&s=${searchInput.value}`)
+         if(!res.ok){
+            throw new Error(`What is this? ${res.status}`)
+         }
+         const data = await res.json()
+
+         if(data.Response === 'False'){
         return movieContent.innerHTML = `
         <div class="start-movie-wrap">
                     <div class="start-text">Unable to find what you’re looking for.<br>
@@ -37,24 +39,42 @@ if(searchForm){
                 </div>
         `
     } else{
-        let newArr = data.Search.map((movie) => {
-        return movie.Title
-   })
+        let onlyFilmsArr = data.Search.filter((movie) => {
+            return movie.Type === `movie`
+        })
 
-   const movieData = await getMovieArr(newArr)
+        let filmTitles = onlyFilmsArr.map((movie) => {
+            return movie.Title
+        })
+
+   const movieData = await getMovieArr(filmTitles)
 
    renderMovies(movieData)
+    }
+    }
+
+    catch (error){
+        console.error(`Error data:`, error)
     }
 })
 }
 
 const getMovieArr = async (arr) => {
     let movArr = arr.map(async (movie) => {
-        
-        const res = await fetch(`http://www.omdbapi.com/?apikey=440110a8&t=${movie}`)
-        const data = await res.json()
 
-        return data
+        try{
+            const res = await fetch(`http://www.omdbapi.com/?apikey=440110a8&t=${movie}`)
+            if(!res.ok){
+                throw new Error(`What is this?: ${res.status}`)
+            }
+            const data = await res.json()
+            
+            return data
+        }
+        
+        catch (error){
+            return console.error(`Error data:`, error)
+        }
     })
 
     return await Promise.all(movArr) 
@@ -85,12 +105,15 @@ const addMovieToList = async (movieId) => {
 
    moviesFromLocalStorage.push(data)
 
+   alert(`${data.Title} has been added to your watchlist!`)
+
    localStorage.setItem("movieWatchList", JSON.stringify(moviesFromLocalStorage))
 }
 
 const removeMovieFromList = (movieId) => {
     moviesFromLocalStorage = moviesFromLocalStorage.filter((movie) => {
-        if(movie.imdbID === movieId){
+        if(movie.Title === movieId){
+            alert(`${movie.Title} has been removed successfully!`)
             return false
         }
 
@@ -102,12 +125,11 @@ const removeMovieFromList = (movieId) => {
     renderWatchlist(moviesFromLocalStorage)
 }
 
-
 const getMovieHtml = (arr) => {
     return arr.map((movie) => {
         return `
         <div class="movie-item-wrap">
-            <div class="movie-image"><img src="${movie.Poster}"></div>
+            <div class="movie-image"><img src="${movie.Poster}" onerror="this.onerror = null; this.src='images/no-image-icon-23494.png'"></div>
             <div class="movie-content">
                 <div class="movie-title-wrap">
                     <div>${movie.Title}</div>
@@ -145,7 +167,7 @@ const getWatchlistHtml = (arr) => {
                     <div>${movie.Runtime}</div>
                     <div>${movie.Genre}</div>
                     <div class="remove">
-                    <button class="watch-button" data-remove="${movie.imdbID}"><i class="fa-solid fa-xmark"></i> Remove</button>
+                    <button class="watch-button" data-remove="${movie.Title}"><i class="fa-solid fa-xmark"></i> Remove</button>
                     </div>
                 </div>
                 <div class="movie-desc">
