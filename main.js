@@ -156,7 +156,7 @@ const getMovieHtml = (arr) => {
 const getWatchlistHtml = (arr) => {
     return arr.map((movie) => {
         return `<div class="movie-item-wrap">
-            <div class="movie-image"><img src="${movie.Poster}"></div>
+            <div class="movie-image"><img src="${movie.Poster}" onerror="this.onerror = null; this.src='images/no-image-icon-23494.png'"></div>
             <div class="movie-content">
                 <div class="movie-title-wrap">
                     <div>${movie.Title}</div>
